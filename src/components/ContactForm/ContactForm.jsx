@@ -1,50 +1,45 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { nanoid } from 'nanoid';
-import { useSelector, useDispatch } from 'react-redux';
 
-import {addContact} from "../../redux/contacts-actions.js";
+import { useGetContactsQuery, useAddContactMutation } from 'redux/contactsSlice.js';
 import s from "./ContactForm.module.css";
 
 const schema = yup.object().shape({
   name: yup.string().required("enter a name, this is a required field"),
-  number: yup.string().min(8).max(13).required("enter a phone number, this is a required field"),
+  phone: yup.string().min(8).max(13).required("enter a phone number, this is a required field"),
 });
 
 const initialValues = {
   name: '',
-  number: '',
+  phone: '',
 };
 
 const nameInputId = nanoid();
-const numberInputId = nanoid();
+const phoneInputId = nanoid();
 
 const ContactForm = () => {
 
-const contacts = useSelector(state => state.contacts);
-const dispatch = useDispatch();
+  const [addContact] = useAddContactMutation();
+  const { data: contacts } = useGetContactsQuery();
 
 
-  const onSubmit = (name, number) => {
-    const newContact = {
-      id: nanoid(),
-      name,
-      number,
+  const handleAddContact = async (values) => {
+    try {
+      await addContact(values);
+      console.log("values:", values);
+    } catch (error) {
+      console.log(error)
     }
-
-    const normalazedNewContactName = newContact.name.toLocaleLowerCase();
-
-    if (contacts.find(contact => contact.name.toLocaleLowerCase() === normalazedNewContactName)) {
-      alert(`${newContact.name} is already in contacts`)
-      return;
-    };
-
-    dispatch(addContact(newContact))
   };
 
-
-  const handleSubmit = (values, { resetForm }) => {
-    onSubmit(values.name, values.number);
+  const handleSubmit = async (values, { resetForm }) => {
+     if (contacts.find(contact => contact.name.toLocaleLowerCase() === values.name.toLocaleLowerCase())){
+       alert(`${values.name} is already in contacts`);
+       resetForm();
+        return
+      }
+   await handleAddContact(values);
     resetForm();
   };
 
@@ -63,12 +58,12 @@ const dispatch = useDispatch();
           id={nameInputId}
         />
         <ErrorMessage className={s.error} name="name" component="div" />
-        <label htmlFor={numberInputId} className={s.label}>Number</label>
+        <label htmlFor={phoneInputId} className={s.label}>Number</label>
         <Field
           className={s.input}
           type="tel"
-          name="number"
-          id={numberInputId}
+          name="phone"
+          id={phoneInputId}
         />
         <ErrorMessage className={s.error} name="number" component="div" />
         <button className={s.button} type='submit'>Add contact</button>
@@ -80,8 +75,93 @@ const dispatch = useDispatch();
 
 export default ContactForm;
 
+//BEFORE
+
+// import { Formik, Form, Field, ErrorMessage } from 'formik';
+// import * as yup from 'yup';
+// import { nanoid } from 'nanoid';
+// import { useSelector, useDispatch } from 'react-redux';
+
+// import {addContact} from "../../redux/contacts-actions.js";
+// import s from "./ContactForm.module.css";
+
+// const schema = yup.object().shape({
+//   name: yup.string().required("enter a name, this is a required field"),
+//   number: yup.string().min(8).max(13).required("enter a phone number, this is a required field"),
+// });
+
+// const initialValues = {
+//   name: '',
+//   number: '',
+// };
+
+// const nameInputId = nanoid();
+// const numberInputId = nanoid();
+
+// const ContactForm = () => {
+
+// const contacts = useSelector(state => state.contacts);
+// const dispatch = useDispatch();
 
 
+//   const onSubmit = (name, number) => {
+//     const newContact = {
+//       id: nanoid(),
+//       name,
+//       number,
+//     }
+
+//     const normalazedNewContactName = newContact.name.toLocaleLowerCase();
+
+    // if (contacts.find(contact => contact.name.toLocaleLowerCase() === normalazedNewContactName)) {
+    //   alert(`${newContact.name} is already in contacts`)
+    //   return;
+    // };
+
+//     dispatch(addContact(newContact))
+//   };
+
+
+//   const handleSubmit = (values, { resetForm }) => {
+//     onSubmit(values.name, values.number);
+//     resetForm();
+//   };
+
+
+//   return (
+//     <Formik
+//       initialValues={initialValues}
+//       onSubmit={handleSubmit}
+//       validationSchema={schema}>
+//       <Form className={s.form} autoComplete='off'>
+//         <label htmlFor={nameInputId} className={s.label}>Name</label>
+//         <Field
+//           className={s.input}
+//           type="text"
+//           name="name"
+//           id={nameInputId}
+//         />
+//         <ErrorMessage className={s.error} name="name" component="div" />
+//         <label htmlFor={numberInputId} className={s.label}>Number</label>
+//         <Field
+//           className={s.input}
+//           type="tel"
+//           name="number"
+//           id={numberInputId}
+//         />
+//         <ErrorMessage className={s.error} name="number" component="div" />
+//         <button className={s.button} type='submit'>Add contact</button>
+//       </Form>
+//     </Formik>
+//   )
+  
+// };
+
+// export default ContactForm;
+
+
+
+//CLASS
 
 // class ContactForm extends Component {
 
