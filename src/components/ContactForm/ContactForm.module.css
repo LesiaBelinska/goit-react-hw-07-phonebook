@@ -28,6 +28,10 @@
     min-width: 100px;
 }
 
+.button:hover {
+    background-color: rgb(109, 167, 215);
+}
+
 .error {
     margin-bottom: 15px;
     color: red;
