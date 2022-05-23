@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import toast from "react-hot-toast";
+import { MdClose } from "react-icons/md";
 
 import { useGetContactByIdQuery, useUpdateContactMutation } from "redux/contactsSlice.js";
 import ContactForm from "components/ContactForm/ContactForm.jsx";
@@ -59,15 +60,22 @@ export const Modal = ({ onClose, id }) => {
             onClick={handleBackdropClick}>
             <div className={s.Modal}>
                 {contact && (
+                    <button
+                    onClick={onClose}
+                    type="button"
+                        className={s.btnClose}><MdClose className={s.icon}/></button>
+                )}
+                {contact && (
                     <ContactForm
-                    initialValues={{ name: contact.name, phone: contact.phone }}
-                    onSubmit={handleUpdateContact}
-                    buttonText='Save' />)}
+                        initialValues={{ name: contact.name, phone: contact.phone }}
+                        onSubmit={handleUpdateContact}
+                        buttonText='Save' />
+                )}
             </div>
         </div>,
         document.querySelector('#modal-root'),
     )
-};
+}
 
 Modal.propTypes = {
     onClose: PropTypes.func.isRequired,
