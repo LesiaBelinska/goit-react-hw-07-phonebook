@@ -1,6 +1,6 @@
 import { Toaster } from "react-hot-toast";
 
-import ContactForm from "./ContactForm/ContactForm.jsx";
+import CreateContact from "./CreateContact/CreateContact.jsx";
 import ContactList from "./ContactList/ContactList.jsx";
 import Filter from "./Filter/Filter.jsx";
 
@@ -13,7 +13,7 @@ const App = () => {
       <Toaster />
       <div className={s.Phonebook}>
         <h1>Phonebook</h1>
-        <ContactForm/>
+        <CreateContact/>
         <h2>Contacts</h2>
         <Filter/>
         <ContactList/>

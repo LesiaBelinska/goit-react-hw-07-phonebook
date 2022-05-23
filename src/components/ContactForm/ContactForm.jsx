@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
 
-import { useGetContactsQuery, useAddContactMutation } from 'redux/contactsSlice.js';
+import { useGetContactsQuery } from 'redux/contactsSlice.js';
 import s from "./ContactForm.module.css";
 
 const schema = yup.object().shape({
@@ -11,36 +11,33 @@ const schema = yup.object().shape({
   phone: yup.string().min(8).max(13).required("enter a phone number, this is a required field"),
 });
 
-const initialValues = {
-  name: '',
-  phone: '',
-};
 
 const nameInputId = nanoid();
 const phoneInputId = nanoid();
 
-const ContactForm = () => {
+const ContactForm = ({ initialValues = {
+  name: '', phone: '',}, onSubmit, buttonText }) => {
 
-  const [addContact] = useAddContactMutation();
+  //const [addContact] = useAddContactMutation();
   const { data: contacts } = useGetContactsQuery();
 
 
-  const handleAddContact = async (values) => {
-    try {
-      await addContact(values);
-      toast.success(`contact "${values.name}" was saved`)
-    } catch (error) {
-      toast.error('error, contact was not saved')
-      console.log(error)
-    }
-  };
+  // const handleAddContact = async (values) => {
+  //   try {
+  //     await addContact(values);
+  //     toast.success(`contact "${values.name}" was saved`)
+  //   } catch (error) {
+  //     toast.error('error, contact was not saved')
+  //     console.log(error)
+  //   }
+  // };
 
   const handleSubmit = async (values, { resetForm }) => {
      if (contacts.find(contact => contact.name.toLocaleLowerCase() === values.name.toLocaleLowerCase())){
        toast.error(`${values.name} is already in contacts`)
         return
      }
-   await handleAddContact(values);
+   await onSubmit(values);
     resetForm();
   };
 
@@ -67,7 +64,7 @@ const ContactForm = () => {
           id={phoneInputId}
         />
         <ErrorMessage className={s.error} name="phone" component="div" />
-        <button className={s.button} type='submit'>Add contact</button>
+        <button className={s.button} type='submit'>{buttonText}</button>
       </Form>
     </Formik>
   )
