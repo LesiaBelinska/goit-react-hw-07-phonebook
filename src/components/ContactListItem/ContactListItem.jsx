@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { useDeleteContactMutation } from 'redux/contactsSlice';
+import { Modal } from 'components/Modal/Modal.jsx';
 import s from "./ContactListItem.module.css";
 
 const ContactListItem = ({ id, name, number }) => {
 
     const [deleteContact, result] = useDeleteContactMutation();
+    const [showModal, setShowModal] = useState(false);
+
+    const toggleModal = () => {
+        setShowModal(!showModal);
+    };
     
     const onDeleteContact = () => deleteContact(id);
 
@@ -22,12 +28,23 @@ const ContactListItem = ({ id, name, number }) => {
 
     return (
         <li className={s.item}>{name}: {number}
-            <button className={s.button} type="button"
+            <div className={s.btnGroup}>
+                <button className={s.button} type="button"
                 onClick={onDeleteContact}
                 disabled={result.isLoading}
             >
                 Delete
-            </button></li>
+            </button>
+            <button
+                className={s.button}
+                onClick={toggleModal}>Update</button>
+            </div>
+        {showModal &&
+                <Modal
+                onClose={toggleModal}
+                id={id}
+                />}
+        </li>
     )
 }
 
