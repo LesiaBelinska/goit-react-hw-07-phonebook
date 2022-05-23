@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import ContactListItem from 'components/ContactListItem/ContactListItem';
 import { useGetContactsQuery } from 'redux/contactsSlice';
 
-
+import s from './ContactList.module.css';
 const ContactList = () => {
-    const { data: contacts } = useGetContactsQuery();
-    //console.log('data:', data);
+    const { data: contacts, isFetching} = useGetContactsQuery();
+   
     
     const filter = useSelector(state => state.filter);
     
@@ -15,7 +15,9 @@ const ContactList = () => {
     
 
     return (
-        <ul>
+        <>
+            {contacts ? isFetching : <p className={s.loading}>Loading...</p>}
+            <ul>
             {contacts && filteredContacts.map(({ id, name, phone }) => {
                 return (
                     <ContactListItem
@@ -27,8 +29,9 @@ const ContactList = () => {
                 )
             })}
         </ul>
+        </>
     )
-};
+}
 
 export default ContactList;
 
