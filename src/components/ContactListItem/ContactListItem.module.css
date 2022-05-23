@@ -11,3 +11,15 @@
     background-color: rgb(109, 167, 215);
 }
 
+.button {
+    height: 30px;
+}
+
+.button:not(:last-child) {
+    margin-right: 15px;
+}
+
+.btnGroup {
+    display: flex;
+    justify-content: space-between;
+}
