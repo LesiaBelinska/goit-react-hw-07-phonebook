@@ -1,3 +1,5 @@
+import { Toaster } from "react-hot-toast";
+
 import ContactForm from "./ContactForm/ContactForm.jsx";
 import ContactList from "./ContactList/ContactList.jsx";
 import Filter from "./Filter/Filter.jsx";
@@ -8,6 +10,7 @@ const App = () => {
    
   return (
     <div className={s.App}>
+      <Toaster />
       <div className={s.Phonebook}>
         <h1>Phonebook</h1>
         <ContactForm/>
