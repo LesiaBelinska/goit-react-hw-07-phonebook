@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { nanoid } from 'nanoid';
+import toast from 'react-hot-toast';
 
 import { useGetContactsQuery, useAddContactMutation } from 'redux/contactsSlice.js';
 import s from "./ContactForm.module.css";
@@ -27,18 +28,18 @@ const ContactForm = () => {
   const handleAddContact = async (values) => {
     try {
       await addContact(values);
-      console.log("values:", values);
+      toast.success(`contact "${values.name}" was saved`)
     } catch (error) {
+      toast.error('error, contact was not saved')
       console.log(error)
     }
   };
 
   const handleSubmit = async (values, { resetForm }) => {
      if (contacts.find(contact => contact.name.toLocaleLowerCase() === values.name.toLocaleLowerCase())){
-       alert(`${values.name} is already in contacts`);
-       resetForm();
+       toast.error(`${values.name} is already in contacts`)
         return
-      }
+     }
    await handleAddContact(values);
     resetForm();
   };
@@ -65,7 +66,7 @@ const ContactForm = () => {
           name="phone"
           id={phoneInputId}
         />
-        <ErrorMessage className={s.error} name="number" component="div" />
+        <ErrorMessage className={s.error} name="phone" component="div" />
         <button className={s.button} type='submit'>Add contact</button>
       </Form>
     </Formik>

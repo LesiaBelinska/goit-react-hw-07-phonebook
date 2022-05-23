@@ -12,7 +12,6 @@ const ContactList = () => {
     
     const filteredContacts = contacts?.filter(contact =>
         contact.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()));
-    console.log(filteredContacts);
     
 
     return (
