@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import toast from "react-hot-toast";
 import { MdClose } from "react-icons/md";
 
@@ -52,7 +52,7 @@ export const Modal = ({ onClose, id }) => {
         }
         return
       
-    }, [result.isSuccess])
+    }, [result.isSuccess]);
 
 
     return createPortal(
@@ -61,9 +61,9 @@ export const Modal = ({ onClose, id }) => {
             <div className={s.Modal}>
                 {contact && (
                     <button
-                    onClick={onClose}
-                    type="button"
-                        className={s.btnClose}><MdClose className={s.icon}/></button>
+                        onClick={onClose}
+                        type="button"
+                        className={s.btnClose}><MdClose className={s.icon} /></button>
                 )}
                 {contact && (
                     <ContactForm
@@ -74,10 +74,11 @@ export const Modal = ({ onClose, id }) => {
             </div>
         </div>,
         document.querySelector('#modal-root'),
-    )
+    );
 }
+
 
 Modal.propTypes = {
     onClose: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
-}
+};
