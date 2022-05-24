@@ -24,6 +24,6 @@ const onChangeFilter = (event) => dispatch(changeFilter(event.currentTarget.valu
         </div>
 
     );
-};
+}
 
 export default Filter;
