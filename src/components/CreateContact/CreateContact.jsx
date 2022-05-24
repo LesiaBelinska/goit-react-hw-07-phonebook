@@ -18,11 +18,11 @@ const CreateContact = () => {
     }
   };
     
-    return(
-        <>
-            <ContactForm onSubmit={handleAddContact} buttonText='Add contact'/>
-        </>
-    )
+  return (
+    <>
+      <ContactForm onSubmit={handleAddContact} buttonText='Add contact' />
+    </>
+  );
 }
 
 export default CreateContact;
