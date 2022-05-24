@@ -23,29 +23,29 @@ const ContactListItem = ({ id, name, number }) => {
         }
         return
       
-    }, [result.isSuccess])
+    }, [result.isSuccess]);
     
 
     return (
         <li className={s.item}>{name}: {number}
             <div className={s.btnGroup}>
                 <button className={s.button} type="button"
-                onClick={onDeleteContact}
-                disabled={result.isLoading}
-            >
-                Delete
-            </button>
-            <button
-                className={s.button}
-                onClick={toggleModal}>Update</button>
+                    onClick={onDeleteContact}
+                    disabled={result.isLoading}
+                >
+                    Delete
+                </button>
+                <button
+                    className={s.button}
+                    onClick={toggleModal}>Update</button>
             </div>
-        {showModal &&
+            {showModal &&
                 <Modal
-                onClose={toggleModal}
-                id={id}
+                    onClose={toggleModal}
+                    id={id}
                 />}
         </li>
-    )
+    );
 }
 
 export default ContactListItem;
